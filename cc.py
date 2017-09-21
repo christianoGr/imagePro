@@ -1,0 +1,24 @@
+import scipy
+from scipy import ndimage
+import matplotlib.pyplot as plt
+import skimage.color
+fname='unnamed2.jpg'
+blur_radius = 1.0
+threshold = 50
+
+img = scipy.misc.imread(fname) # gray-scale image
+img= skimage.color.rgb2gray(img)
+print(img.shape)
+
+# smooth the image (to remove small objects)
+imgf = ndimage.gaussian_filter(img, blur_radius)
+threshold = 50
+
+# find connected components
+labeled, nr_objects = ndimage.label(imgf > threshold) 
+print "Number of objects is %d " % nr_objects
+
+plt.imsave('./out.jpg', labeled)
+plt.imshow(labeled)
+
+plt.show()
